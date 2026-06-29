@@ -6,10 +6,40 @@
 -->
 <html>
 	<head>
-		<title>Find Mobile Services - Mobile Service Finder</title>
+		<title>Check Mobile Network Coverage - Mobile Coverage Finder</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<style>
+			.coverage-form {
+				background: #f4f4f4;
+				padding: 20px;
+				border-radius: 5px;
+				margin: 20px 0;
+			}
+			.form-group {
+				margin-bottom: 15px;
+			}
+			.form-group label {
+				display: block;
+				margin-bottom: 5px;
+				font-weight: bold;
+			}
+			.form-group input, .form-group select {
+				width: 100%;
+				padding: 10px;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				box-sizing: border-box;
+			}
+			.demo-notice {
+				background: #e8f4f8;
+				border-left: 4px solid #0084d1;
+				padding: 10px 15px;
+				margin: 15px 0;
+				border-radius: 3px;
+			}
+		</style>
 	</head>
 	<body class="is-preload">
 
@@ -22,7 +52,7 @@
 
 							<!-- Header -->
 								<header id="header">
-									<a href="index.html" class="logo"><strong>Mobile</strong> Service Finder</a>
+									<a href="index.html" class="logo"><strong>Mobile</strong> Coverage Finder</a>
 									<ul class="icons">
 										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
 										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
@@ -35,62 +65,193 @@
 							<!-- Content -->
 								<section>
 									<header class="main">
-										<h1>Find Mobile Services Near You</h1>
+										<h1>Check Mobile Network Coverage by Location</h1>
 									</header>
 
-									<span class="image main"><img src="images/pic11.jpg" alt="" /></span>
+									<span class="image main"><img src="images/pic11.jpg" alt="Coverage Map" /></span>
 
-									<p>Looking for mobile services in your area? This guide helps you locate mobile phone retailers, repair shops, and service providers based on your location. Whether you need a new phone, repairs, or service plan information, we'll help you find what you're looking for.</p>
-
-									<hr class="major" />
-
-									<h2>How to Find Mobile Services</h2>
-									<p>Use the location finder tool to search for mobile services near you. Simply enter your location and discover nearby stores, repair shops, and service providers with details about their services, hours, and how to reach them.</p>
+									<p>Find out which mobile carriers have network coverage in your area. Enter your location below to see available 4G, 5G, and other network services.</p>
 
 									<hr class="major" />
 
-									<h2>Types of Mobile Services Available</h2>
-									<div class="row gtr-200">
-										<div class="col-6 col-12-medium">
-											<h3>Retail Stores</h3>
-											<p>New phone sales, accessories, and official service center locations from major carriers and manufacturers.</p>
-										</div>
-										<div class="col-6 col-12-medium">
-											<h3>Repair Services</h3>
-											<p>Professional phone repairs, screen replacement, battery service, and water damage recovery.</p>
-										</div>
-										<div class="col-6 col-12-medium">
-											<h3>Service Providers</h3>
-											<p>Carrier support offices for plan changes, bill payments, and customer service assistance.</p>
-										</div>
-										<div class="col-6 col-12-medium">
-											<h3>Accessories & More</h3>
-											<p>Phone cases, chargers, screen protectors, and other mobile phone accessories.</p>
+									<h2>Coverage Finder Tool</h2>
+
+									<!-- Coverage Finder Form -->
+									<div class="coverage-form">
+										<h3>Enter Your Location</h3>
+										<form method="post" action="#">
+											<div class="row gtr-uniform">
+												<div class="col-6 col-12-small">
+													<div class="form-group">
+														<label for="location">Your Location (City or Zip Code):</label>
+														<input type="text" id="location" name="location" placeholder="e.g., New York, NY or 10001" />
+													</div>
+												</div>
+												<div class="col-6 col-12-small">
+													<div class="form-group">
+														<label for="carrier">Select Carrier:</label>
+														<select id="carrier" name="carrier" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+															<option value="">-- All Carriers --</option>
+															<option value="verizon">Verizon</option>
+															<option value="att">AT&T</option>
+															<option value="tmobile">T-Mobile</option>
+															<option value="other">Regional/Other</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-12">
+													<div class="form-group">
+														<label for="coverage-type">Network Type:</label>
+														<select id="coverage-type" name="coverage-type" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+															<option value="">-- Any Network --</option>
+															<option value="5g">5G Only</option>
+															<option value="4g">4G LTE</option>
+															<option value="3g">3G</option>
+															<option value="all">All Available</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-12">
+													<ul class="actions">
+														<li><input type="submit" value="Check Coverage" class="primary" /></li>
+														<li><input type="reset" value="Clear" /></li>
+													</ul>
+												</div>
+											</div>
+										</form>
+										<div class="demo-notice">
+											<strong>ℹ️ Demo Notice:</strong> This is a demonstration tool. Location information entered here is not saved or collected.
 										</div>
 									</div>
 
 									<hr class="major" />
 
-									<h2>What You'll Find</h2>
-									<p>For each mobile service location, you'll get:</p>
+									<h2>Understanding Network Coverage</h2>
+
+									<h3>What is Coverage?</h3>
+									<p>Mobile network coverage refers to the geographic areas where a carrier's cell towers can reach your phone. Different carriers have different coverage maps, signal strength, and network technologies available in various locations.</p>
+
+									<h3>Coverage Types Explained</h3>
 									<ul>
-										<li><strong>Location:</strong> Exact address and directions</li>
-										<li><strong>Hours:</strong> Opening and closing times</li>
-										<li><strong>Phone Number:</strong> Direct contact information</li>
-										<li><strong>Services:</strong> What they offer and specialize in</li>
-										<li><strong>How to Get There:</strong> Distance from your location and directions</li>
-										<li><strong>Reviews:</strong> Customer feedback and ratings</li>
+										<li><strong>5G:</strong> Newest ultra-fast network technology with high speeds and low latency</li>
+										<li><strong>4G LTE:</strong> Fast, reliable standard network available nationwide</li>
+										<li><strong>3G:</strong> Older technology still available in some areas</li>
+										<li><strong>Signal Strength:</strong> How strong the network signal is (Excellent, Good, Fair, Poor)</li>
 									</ul>
 
 									<hr class="major" />
 
-									<h2>Popular Mobile Service Categories</h2>
+									<h2>Major Network Carriers</h2>
+
+									<h3>Verizon Wireless</h3>
+									<p><strong>Coverage Type:</strong> 5G, 4G LTE<br>
+									<strong>Known For:</strong> Extensive nationwide coverage and reliable service<br>
+									<strong>5G Availability:</strong> Major cities and expanding urban areas</p>
+
+									<h3>AT&T Mobile</h3>
+									<p><strong>Coverage Type:</strong> 5G, 4G LTE<br>
+									<strong>Known For:</strong> Large network footprint with good rural coverage<br>
+									<strong>5G Availability:</strong> Growing in cities and metropolitan areas</p>
+
+									<h3>T-Mobile US</h3>
+									<p><strong>Coverage Type:</strong> 5G, 4G LTE<br>
+									<strong>Known For:</strong> Competitive pricing with expanding 5G network<br>
+									<strong>5G Availability:</strong> Fast 5G rollout in major population centers</p>
+
+									<h3>Regional Carriers</h3>
+									<p><strong>Coverage Type:</strong> 4G LTE, Regional Networks<br>
+									<strong>Known For:</strong> Local service in specific regions<br>
+									<strong>Availability:</strong> Limited to specific geographic areas</p>
+
+									<hr class="major" />
+
+									<h2>How to Check Coverage</h2>
+
+									<h3>Step 1: Enter Your Location</h3>
+									<p>Use the finder tool above and enter your city, zip code, or address. Be as specific as possible for accurate results.</p>
+
+									<h3>Step 2: Select a Carrier</h3>
+									<p>Choose the carrier you want to check, or select "All Carriers" to compare multiple options in your area.</p>
+
+									<h3>Step 3: Choose Network Type</h3>
+									<p>Select the network technology you're interested in (5G, 4G LTE, etc.) or view all available networks.</p>
+
+									<h3>Step 4: View Results</h3>
+									<p>See coverage information including signal strength, network type, and availability details for your location.</p>
+
+									<hr class="major" />
+
+									<h2>Coverage Map Information</h2>
+
+									<p>Coverage maps show:</p>
 									<ul>
-										<li><strong>Official Carriers:</strong> Verizon, AT&T, T-Mobile, and more</li>
-										<li><strong>Authorized Retailers:</strong> Best Buy, Walmart, Target, and carrier-authorized stores</li>
-										<li><strong>Independent Repair Shops:</strong> Local phone repair specialists</li>
-										<li><strong>Premium Service Centers:</strong> Apple Store, Samsung Service Centers</li>
-										<li><strong>MVNO Providers:</strong> Alternative carrier options</li>
+										<li>Areas with strong network signal (shown in darker colors)</li>
+										<li>Areas with weak signal (shown in lighter colors)</li>
+										<li>Dead zones with no coverage</li>
+										<li>Network type available (5G vs 4G)</li>
+										<li>Signal strength estimates</li>
+									</ul>
+
+									<hr class="major" />
+
+									<h2>Signal Strength Levels</h2>
+
+									<div class="table-wrapper">
+										<table>
+											<thead>
+												<tr>
+													<th>Signal Strength</th>
+													<th>Description</th>
+													<th>Speed Estimate</th>
+													<th>Usage</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Excellent (4-5 bars)</td>
+													<td>Very strong signal</td>
+													<td>50-100+ Mbps</td>
+													<td>Best for all activities</td>
+												</tr>
+												<tr>
+													<td>Good (3 bars)</td>
+													<td>Strong signal</td>
+													<td>25-50 Mbps</td>
+													<td>Good for streaming and browsing</td>
+												</tr>
+												<tr>
+													<td>Fair (2 bars)</td>
+													<td>Moderate signal</td>
+													<td>10-25 Mbps</td>
+													<td>Works for calls and basic data</td>
+												</tr>
+												<tr>
+													<td>Poor (1 bar)</td>
+													<td>Weak signal</td>
+													<td>1-10 Mbps</td>
+													<td>Limited functionality</td>
+												</tr>
+												<tr>
+													<td>No Signal (0 bars)</td>
+													<td>No coverage</td>
+													<td>No data</td>
+													<td>Emergency calls only</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+									<hr class="major" />
+
+									<h2>Tips for Best Coverage</h2>
+
+									<ul>
+										<li><strong>Choose a carrier with strong coverage in your area:</strong> Use coverage maps to compare before switching</li>
+										<li><strong>Check coverage in areas you frequent:</strong> Work, home, gym, school, etc.</li>
+										<li><strong>Consider 5G availability:</strong> If you need ultra-fast speeds, check 5G coverage</li>
+										<li><strong>Test signal strength:</strong> Visit the store or ask friends about their experience</li>
+										<li><strong>Rural vs Urban:</strong> Different carriers excel in different areas</li>
+										<li><strong>Indoor coverage matters:</strong> Some carriers have better indoor signal penetration</li>
 									</ul>
 
 								</section>
@@ -105,7 +266,7 @@
 							<!-- Search -->
 								<section id="search" class="alt">
 									<form method="post" action="#">
-										<input type="text" name="query" id="query" placeholder="Search services..." />
+										<input type="text" name="query" id="query" placeholder="Search coverage..." />
 									</form>
 								</section>
 
@@ -116,15 +277,15 @@
 									</header>
 									<ul>
 										<li><a href="index.html">Homepage</a></li>
-										<li><a href="generic.html">Find Services by Location</a></li>
-										<li><a href="elements.html">Service Details & How To</a></li>
+										<li><a href="generic.html">Check Coverage by Location</a></li>
+										<li><a href="elements.html">Coverage Guide & FAQ</a></li>
 										<li>
-											<span class="opener">Service Types</span>
+											<span class="opener">Network Carriers</span>
 											<ul>
-												<li><a href="#">Retail Stores</a></li>
-												<li><a href="#">Repair Services</a></li>
-												<li><a href="#">Service Providers</a></li>
-												<li><a href="#">Accessories</a></li>
+												<li><a href="#">Verizon</a></li>
+												<li><a href="#">AT&T</a></li>
+												<li><a href="#">T-Mobile</a></li>
+												<li><a href="#">Regional Carriers</a></li>
 											</ul>
 										</li>
 										<li><a href="#">About Us</a></li>
@@ -132,9 +293,9 @@
 										<li>
 											<span class="opener">Resources</span>
 											<ul>
-												<li><a href="#">Service Directory</a></li>
-												<li><a href="#">How to Choose</a></li>
-												<li><a href="#">Contact Support</a></li>
+												<li><a href="#">Coverage Maps</a></li>
+												<li><a href="#">Network Info</a></li>
+												<li><a href="#">Support</a></li>
 												<li><a href="#">Feedback</a></li>
 											</ul>
 										</li>
@@ -150,39 +311,39 @@
 									<div class="mini-posts">
 										<article>
 											<a href="#" class="image"><img src="images/pic07.jpg" alt="" /></a>
-											<p>Find mobile phone retailers and carriers near your location.</p>
+											<p>Check 5G network availability</p>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="images/pic08.jpg" alt="" /></a>
-											<p>Locate professional phone repair services in your area.</p>
+											<p>Compare carrier coverage</p>
 										</article>
 										<article>
 											<a href="#" class="image"><img src="images/pic09.jpg" alt="" /></a>
-											<p>Learn how to get the best mobile services.</p>
+											<p>View coverage maps</p>
 										</article>
 									</div>
 									<ul class="actions">
-										<li><a href="generic.html" class="button">Find Now</a></li>
+										<li><a href="#" class="button">Back to Top</a></li>
 									</ul>
 								</section>
 
 							<!-- Section -->
 								<section>
 									<header class="major">
-										<h2>Get Help</h2>
+										<h2>Need Assistance?</h2>
 									</header>
-									<p>Have questions about finding mobile services? Our support team is here to help you locate exactly what you need.</p>
+									<p>Have questions about mobile network coverage in your area? Contact our support team.</p>
 									<ul class="contact">
-										<li class="icon solid fa-envelope"><a href="#">support@mobileservicefinder.com</a></li>
-										<li class="icon solid fa-phone">1-800-MOBILE-1</li>
-										<li class="icon solid fa-home">Mobile Service Finder<br />
-										Nationwide Coverage</li>
+										<li class="icon solid fa-envelope"><a href="#">support@mobilecoveragefinder.com</a></li>
+										<li class="icon solid fa-phone">1-800-COVERAGE</li>
+										<li class="icon solid fa-home">Coverage Support Center<br />
+										Available Nationwide</li>
 									</ul>
 								</section>
 
 							<!-- Footer -->
 								<footer id="footer">
-									<p class="copyright">&copy; Mobile Service Finder. Helping you find mobile services anywhere.</p>
+									<p class="copyright">&copy; Mobile Coverage Finder. Check network service anywhere.</p>
 								</footer>
 
 						</div>
