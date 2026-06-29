@@ -10,6 +10,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<!-- Leaflet CSS -->
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 		<style>
 			.coverage-form {
 				background: #f4f4f4;
@@ -38,6 +40,41 @@
 				padding: 10px 15px;
 				margin: 15px 0;
 				border-radius: 3px;
+			}
+			#map {
+				height: 500px;
+				width: 100%;
+				border-radius: 5px;
+				margin: 20px 0;
+				border: 2px solid #ddd;
+			}
+			.map-legend {
+				background: white;
+				padding: 15px;
+				border-radius: 5px;
+				margin: 15px 0;
+				border: 1px solid #ddd;
+			}
+			.legend-item {
+				margin: 8px 0;
+				display: flex;
+				align-items: center;
+			}
+			.legend-icon {
+				width: 30px;
+				height: 30px;
+				margin-right: 10px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 16px;
+			}
+			.map-info {
+				background: #f0f0f0;
+				padding: 10px;
+				border-radius: 4px;
+				margin: 10px 0;
+				font-size: 0.95em;
 			}
 		</style>
 	</head>
@@ -70,7 +107,7 @@
 
 									<span class="image main"><img src="images/pic11.jpg" alt="Coverage Map" /></span>
 
-									<p>Find out which mobile carriers have network coverage in your area. Enter your location below to see available 4G, 5G, and other network services.</p>
+									<p>Find out which mobile carriers have network coverage in your area. Enter your location below to see available 4G, 5G, and other network services with an interactive map.</p>
 
 									<hr class="major" />
 
@@ -79,12 +116,23 @@
 									<!-- Coverage Finder Form -->
 									<div class="coverage-form">
 										<h3>Enter Your Location</h3>
-										<form method="post" action="#">
+										<form id="coverage-form" onsubmit="return false;">
 											<div class="row gtr-uniform">
 												<div class="col-6 col-12-small">
 													<div class="form-group">
 														<label for="location">Your Location (City or Zip Code):</label>
-														<input type="text" id="location" name="location" placeholder="e.g., New York, NY or 10001" />
+														<input type="text" id="location" name="location" placeholder="e.g., Dundee, Scotland or New York, NY" />
+													</div>
+												</div>
+												<div class="col-6 col-12-small">
+													<div class="form-group">
+														<label for="radius">Search Radius (miles):</label>
+														<select id="radius" name="radius" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+															<option value="5">5 miles</option>
+															<option value="10" selected>10 miles</option>
+															<option value="15">15 miles</option>
+															<option value="20">20 miles</option>
+														</select>
 													</div>
 												</div>
 												<div class="col-6 col-12-small">
@@ -99,7 +147,7 @@
 														</select>
 													</div>
 												</div>
-												<div class="col-12">
+												<div class="col-6 col-12-small">
 													<div class="form-group">
 														<label for="coverage-type">Network Type:</label>
 														<select id="coverage-type" name="coverage-type" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
@@ -113,15 +161,44 @@
 												</div>
 												<div class="col-12">
 													<ul class="actions">
-														<li><input type="submit" value="Check Coverage" class="primary" /></li>
-														<li><input type="reset" value="Clear" /></li>
+														<li><input type="button" value="Show Coverage Map" class="primary" onclick="searchLocation()" /></li>
+														<li><input type="button" value="Clear Map" onclick="clearMap()" /></li>
 													</ul>
 												</div>
 											</div>
 										</form>
 										<div class="demo-notice">
-											<strong>ℹ️ Demo Notice:</strong> This is a demonstration tool. Location information entered here is not saved or collected.
+											<strong>ℹ️ Demo Notice:</strong> This is a demonstration tool. Location information entered here is not saved or collected. The map will auto-center on your entered location with a coverage radius display.
 										</div>
+									</div>
+
+									<!-- Interactive Map -->
+									<div id="map"></div>
+
+									<!-- Map Legend -->
+									<div class="map-legend">
+										<h4>Map Legend</h4>
+										<div class="legend-item">
+											<div class="legend-icon">📍</div>
+											<div>Your Location (Center Point)</div>
+										</div>
+										<div class="legend-item">
+											<div class="legend-icon">📶</div>
+											<div>Signal Tower / Coverage Point</div>
+										</div>
+										<div class="legend-item">
+											<div class="legend-icon">📡</div>
+											<div>WiFi Hotspot</div>
+										</div>
+										<div class="legend-item">
+											<div style="width: 30px; height: 30px; background: rgba(0, 122, 255, 0.2); border: 2px solid #007AFF; border-radius: 50%; margin-right: 10px;"></div>
+											<div>Coverage Search Radius</div>
+										</div>
+									</div>
+
+									<!-- Map Info -->
+									<div class="map-info">
+										<p><strong>How to use:</strong> Enter a city name or zip code in the form above, select your search radius, and click "Show Coverage Map". The map will automatically center on your location and display the search radius. Markers show signal towers and WiFi hotspots in your area.</p>
 									</div>
 
 									<hr class="major" />
@@ -168,16 +245,19 @@
 									<h2>How to Check Coverage</h2>
 
 									<h3>Step 1: Enter Your Location</h3>
-									<p>Use the finder tool above and enter your city, zip code, or address. Be as specific as possible for accurate results.</p>
+									<p>Use the finder tool above and enter your city, zip code. Be as specific as possible for accurate results.</p>
 
-									<h3>Step 2: Select a Carrier</h3>
+									<h3>Step 2: Choose Search Radius</h3>
+									<p>Select the area radius around your location where you want to see coverage (5, 10, 15, or 20 miles).</p>
+
+									<h3>Step 3: Select a Carrier</h3>
 									<p>Choose the carrier you want to check, or select "All Carriers" to compare multiple options in your area.</p>
 
-									<h3>Step 3: Choose Network Type</h3>
+									<h3>Step 4: Choose Network Type</h3>
 									<p>Select the network technology you're interested in (5G, 4G LTE, etc.) or view all available networks.</p>
 
-									<h3>Step 4: View Results</h3>
-									<p>See coverage information including signal strength, network type, and availability details for your location.</p>
+									<h3>Step 5: View Map Results</h3>
+									<p>The map will auto-center on your location and display markers showing signal towers, WiFi hotspots, and the coverage radius.</p>
 
 									<hr class="major" />
 
@@ -185,10 +265,11 @@
 
 									<p>Coverage maps show:</p>
 									<ul>
-										<li>Areas with strong network signal (shown in darker colors)</li>
-										<li>Areas with weak signal (shown in lighter colors)</li>
-										<li>Dead zones with no coverage</li>
-										<li>Network type available (5G vs 4G)</li>
+										<li>Your location marked at the center</li>
+										<li>Coverage search radius displayed as a circle</li>
+										<li>Signal tower locations within your radius</li>
+										<li>WiFi hotspot locations</li>
+										<li>Network type and carrier information</li>
 										<li>Signal strength estimates</li>
 									</ul>
 
@@ -350,6 +431,178 @@
 					</div>
 
 			</div>
+
+		<!-- Leaflet JavaScript -->
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+		<script>
+			let map;
+			let locationMarker;
+			let radiusCircle;
+			let towers = [];
+			let wifiSpots = [];
+
+			// Initialize map
+			function initializeMap() {
+				if (!map) {
+					// Default to center of UK (for Dundee example)
+					map = L.map('map').setView([40, -95], 4);
+					L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+						attribution: '© OpenStreetMap contributors',
+						maxZoom: 18
+					}).addTo(map);
+				}
+			}
+
+			// Search location function
+			function searchLocation() {
+				const location = document.getElementById('location').value.trim();
+				const radius = parseFloat(document.getElementById('radius').value);
+
+				if (!location) {
+					alert('Please enter a location');
+					return;
+				}
+
+				initializeMap();
+
+				// Use geocoding service to find coordinates
+				const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`;
+				
+				fetch(url)
+					.then(response => response.json())
+					.then(data => {
+						if (data.length === 0) {
+							alert('Location not found. Please try another search.');
+							return;
+						}
+
+						const lat = parseFloat(data[0].lat);
+						const lon = parseFloat(data[0].lon);
+
+						// Clear existing markers
+						if (locationMarker) map.removeLayer(locationMarker);
+						if (radiusCircle) map.removeLayer(radiusCircle);
+						
+						// Remove existing markers
+						towers.forEach(marker => map.removeLayer(marker));
+						wifiSpots.forEach(marker => map.removeLayer(marker));
+						towers = [];
+						wifiSpots = [];
+
+						// Add location marker
+						locationMarker = L.marker([lat, lon], {
+							icon: L.icon({
+								iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+								shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+								iconSize: [25, 41],
+								iconAnchor: [12, 41],
+								popupAnchor: [1, -34],
+								shadowSize: [41, 41]
+							})
+						}).addTo(map).bindPopup(`<b>Your Location</b><br>${location}`);
+
+						// Add radius circle (convert miles to kilometers for display)
+						const radiusKm = radius * 1.60934;
+						radiusCircle = L.circle([lat, lon], {
+							radius: radiusKm * 1000,
+							color: '#007AFF',
+							weight: 2,
+							opacity: 0.5,
+							fillOpacity: 0.1
+						}).addTo(map).bindPopup(`Search Radius: ${radius} miles`);
+
+						// Add sample signal towers within radius
+						addSampleTowers(lat, lon, radius);
+
+						// Add sample WiFi hotspots within radius
+						addSampleWiFi(lat, lon, radius);
+
+						// Center and zoom map
+						map.setView([lat, lon], 11);
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert('Error searching location. Please try again.');
+					});
+			}
+
+			// Add sample signal towers
+			function addSampleTowers(centerLat, centerLon, radius) {
+				// Generate random towers within radius for demo
+				const numTowers = Math.floor(Math.random() * 4) + 3;
+				const radiusInDegrees = radius / 69; // Approximate conversion
+
+				for (let i = 0; i < numTowers; i++) {
+					const angle = (Math.random() * 360) * (Math.PI / 180);
+					const distance = Math.random() * radiusInDegrees;
+					const lat = centerLat + distance * Math.cos(angle);
+					const lon = centerLon + distance * Math.sin(angle);
+
+					const towerMarker = L.marker([lat, lon], {
+						icon: L.icon({
+							iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+							shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+							iconSize: [25, 41],
+							iconAnchor: [12, 41],
+							popupAnchor: [1, -34],
+							shadowSize: [41, 41]
+						})
+					}).addTo(map).bindPopup(`<b>Signal Tower</b><br>Coverage Type: 4G/5G`);
+
+					towers.push(towerMarker);
+				}
+			}
+
+			// Add sample WiFi hotspots
+			function addSampleWiFi(centerLat, centerLon, radius) {
+				// Generate random WiFi spots within radius for demo
+				const numWiFi = Math.floor(Math.random() * 3) + 1;
+				const radiusInDegrees = radius / 69;
+
+				for (let i = 0; i < numWiFi; i++) {
+					const angle = (Math.random() * 360) * (Math.PI / 180);
+					const distance = Math.random() * radiusInDegrees;
+					const lat = centerLat + distance * Math.cos(angle);
+					const lon = centerLon + distance * Math.sin(angle);
+
+					const wifiMarker = L.marker([lat, lon], {
+						icon: L.icon({
+							iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+							shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+							iconSize: [25, 41],
+							iconAnchor: [12, 41],
+							popupAnchor: [1, -34],
+							shadowSize: [41, 41]
+						})
+					}).addTo(map).bindPopup(`<b>WiFi Hotspot</b><br>Public WiFi Available`);
+
+					wifiSpots.push(wifiMarker);
+				}
+			}
+
+			// Clear map
+			function clearMap() {
+				if (locationMarker) {
+					map.removeLayer(locationMarker);
+					locationMarker = null;
+				}
+				if (radiusCircle) {
+					map.removeLayer(radiusCircle);
+					radiusCircle = null;
+				}
+				towers.forEach(marker => map.removeLayer(marker));
+				wifiSpots.forEach(marker => map.removeLayer(marker));
+				towers = [];
+				wifiSpots = [];
+				
+				// Reset form
+				document.getElementById('location').value = '';
+				map.setView([40, -95], 4);
+			}
+
+			// Initialize map on page load
+			window.addEventListener('load', initializeMap);
+		</script>
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
